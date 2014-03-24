@@ -31,6 +31,33 @@ var events = sequelize.define('Event',{
 	value: Sequelize.FLOAT(11)
 });
 
+var workspaces = sequelize.define('Workspace', {
+	visibility: Sequelize.BOOLEAN,
+    lon_lat_zoom: Sequelize.STRING, 
+    order: Sequelize.INTEGER
+});
+
+var workspaceitem = sequelize.define('WorkspaceItem', {
+	visibility: Sequelize.BOOLEAN,
+    lon_lat_zoom: Sequelize.STRING, 
+    order: Sequelize.INTEGER,
+    opacity: Sequelize.INTEGER,
+	style: Sequelize.STRING
+});
+
+var wms_source = sequelize.define('Layer', {
+	layer_name: Sequelize.STRING,
+	display_name: Sequelize.STRING,
+	format: Sequelize.STRING,
+	height: Sequelize.INTEGER,
+	width: Sequelize.INTEGER,
+	tiled: Sequelize.BOOLEAN,
+	visibility: Sequelize.BOOLEAN,
+	opacity: Sequelize.INTEGER,
+	style: Sequelize.STRING,
+	wms_url: Sequelize.STRING,
+	options: Sequelize.STRING
+});
 
 location.hasMany(timeseries);
 location.hasMany(location, {as: 'Sublocations'});
@@ -39,9 +66,17 @@ timeseries.belongsTo(location);
 timeseries.hasMany(events);
 events.belongsTo(timeseries);
 
+workspaces.hasMany(workspaceitem);
+workspaceitem.belongsTo(workspaces);
+workspaceitem.hasOne(wms_source);
+wms_source.belongsTo(workspaceitem);
+
 module.exports = {
 	locations: location,
 	timeseries: timeseries,
 	events: events,
+	workspaces: workspaces,
+	workspaceitems: workspaceitem,
+	layers: wms_source,
 	db: sequelize
 };
