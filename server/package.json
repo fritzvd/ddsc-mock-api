@@ -1,0 +1,35 @@
+{
+  "name": "ddsc-mock-api",
+  "version": "0.0.1",
+  "description": "Backend for webclient",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/fritzvd/ddsc-mock-api"
+  },
+  "keywords": [
+    "js",
+    "node",
+    "npm",
+    "restful"
+  ],
+  "author": "fritzvd",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/fritzvd/ddsc-mock-api/issues"
+  },
+  "homepage": "https://github.com/fritzvd/ddsc-mock-api",
+  "dependencies": {
+    "pg": "~2.11.1",
+    "sequelize": "~1.7.0-rc6",
+    "express": "~3.4.8"
+  },
+  "devDependencies": {
+    "grunt-mocha-test": "^0.10.0",
+    "grunt": "^0.4.4",
+    "should": "^3.2.0-beta1"
+  }
+}

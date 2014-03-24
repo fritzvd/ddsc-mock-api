@@ -1,0 +1,3 @@
+[submodule "inframan"]
+	path = inframan
+	url = git@github.com:nens/inframan
