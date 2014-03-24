@@ -33,12 +33,14 @@ var events = sequelize.define('Event',{
 
 
 location.hasMany(timeseries);
-timeseries.hasOne(location);
+location.hasMany(location, {as: 'Sublocations'});
+location.hasMany(location, {as: 'Superlocations'});
+timeseries.belongsTo(location);
 timeseries.hasMany(events);
-events.hasOne(timeseries);
+events.belongsTo(timeseries);
 
 module.exports = {
-	location: location,
+	locations: location,
 	timeseries: timeseries,
 	events: events,
 	db: sequelize

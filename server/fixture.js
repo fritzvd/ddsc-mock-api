@@ -2,7 +2,7 @@ var models = require('./models');
 
 var location1, timeseries1;
 eventsList = [];
-models.location.create({
+models.locations.create({
 	uuid: 'pietje',
 	name: 'WestDijk',
 	shown_on_map: true,
