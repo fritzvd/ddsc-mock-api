@@ -1,3 +1,6 @@
 [submodule "inframan"]
 	path = inframan
 	url = git@github.com:nens/inframan
+[submodule "webclient"]
+	path = webclient
+	url = git@github.com:ddsc/webclient
