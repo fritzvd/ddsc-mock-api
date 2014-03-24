@@ -1,25 +1,45 @@
 // models.js
 var Sequelize = require('sequelize');
-var sequelize = new Sequelize('newdb', 'fritz', 'fritz', {
+var sequelize = new Sequelize('ddsc-mock', 'fritz', 'fritz', {
 	dialect: 'postgres',
 	port: 5432
 });
 
-var user = sequelize.define('User', {
-	username: Sequelize.STRING,
-	password: Sequelize.STRING
+var location = sequelize.define('Location', {
+	uuid: Sequelize.STRING,
+	name: Sequelize.STRING,
+	shown_on_map: Sequelize.BOOLEAN,
+	owner: Sequelize.STRING,
+	point_geometry: Sequelize.STRING,
+}, {
+	paranoid: true
 });
 
-var bill = sequelize.define('Bill',{
-	timestamp: Sequelize.DATE,
-	price: Sequelize.FLOAT(11)
+var timeseries = sequelize.define('Timeserie',{
+	latest_timestamp: Sequelize.DATE,
+	value: Sequelize.FLOAT(11),
+	uuid: Sequelize.STRING,
+	value_type: Sequelize.STRING,
+	parameter: Sequelize.STRING,
+	owner: Sequelize.STRING,
+	unit: Sequelize.STRING,
 });
 
-user.hasMany(bill);
-bill.hasMany(user);
+var events = sequelize.define('Event',{
+	datetime: Sequelize.DATE,
+	flag: Sequelize.STRING,
+	value: Sequelize.FLOAT(11)
+});
+
+
+location.hasMany(timeseries);
+timeseries.hasOne(location);
+timeseries.hasMany(events);
+events.hasOne(timeseries);
 
 module.exports = {
-	user: user,
-	bill: bill,
+	location: location,
+	timeseries: timeseries,
+	events: events,
 	db: sequelize
 };

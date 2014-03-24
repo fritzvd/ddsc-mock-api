@@ -1,31 +1,57 @@
 var models = require('./models');
 
-var pietje, henk, firstbill;
-models.user.create({
-	id: 3,
-	username: 'pietje',
-	password: 'i-am-piet'
-}).complete(function (err, user) {
-	pietje = user;
-	var firstbill = models.bill.create({
-	id: 1,
-	timestamp: Date.now(),
-	price: 30.00
-	}).complete(function (err, bill) {
-		console.info(pietje, bill)
-		pietje.setBills([bill])
+var location1, timeseries1;
+eventsList = [];
+models.location.create({
+	uuid: 'pietje',
+	name: 'WestDijk',
+	shown_on_map: true,
+	owner: 'fritz',
+	point_geometry: "[54.5, 4.3]"
+}).complete(function (err, location) {
+	var timeseries1 = models.timeseries.create({
+	latest_timestamp: Date.now(),
+	uuid: 'henkie',
+	value_type: 'float',
+	paramater: 'cholrine',
+	unit: 'm'
+	}).complete(function (err, timeseries) {
+		console.info(err, location);
+		location.setTimeserieses([timeseries])
+		models.events.create({
+			datetime: Date.now(),
+			flag: null,
+			value: Math.random()
+			}).complete(function (err, events) {
+				eventsList.push(events);
+			});
+		models.events.create({
+			datetime: Date.now(),
+			flag: null,
+			value: Math.random()
+			}).complete(function (err, events) {
+				eventsList.push(events);
+			});
+		models.events.create({
+			datetime: Date.now(),
+			flag: null,
+			value: Math.random()
+			}).complete(function (err, events) {
+				eventsList.push(events);
+				timeseries.setEvents(eventsList);
+			});
 	});
 	// console.info(err, user);
 });
 
-models.user.create({
-	id: 1,
-	username: 'henk',
-	password: 'i-am-henk'
-}).complete(function (err, user) {
-	henk = user
-	// console.info(err, user);
-});
+// models.user.create({
+// 	id: 1,
+// 	username: 'henk',
+// 	password: 'i-am-henk'
+// }).complete(function (err, user) {
+// 	henk = user
+// 	// console.info(err, user);
+// });
 
 
 

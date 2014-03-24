@@ -8,6 +8,18 @@ var primitives = {
 				list = list;
 				res.send(list);
 			});
+	},
+	one: function (req, res) {
+		var thing;
+		models[req.params.table].find(req.params.id)
+		.complete(function (err, thing) {
+			debugger
+			res.send(thing);
+			// user.getBills().success(function (bills) {
+			// 	user.values.bills = bills;
+			// 	res.send(user);
+			// });
+		});
 	}
 }
 
@@ -59,6 +71,5 @@ var bill = {
 }
 
 module.exports = {
-	user: user,
-	bill: bill
+	primitives: primitives
 };
