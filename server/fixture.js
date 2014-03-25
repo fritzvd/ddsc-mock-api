@@ -80,4 +80,26 @@ models.workspaces.create({
 	})
 })
 
+	// app.get('/api/v1/account', function (req, res) {
+	// 	var result = {
+	// 	    "initialPeriod": "1m", 
+	// 	    "authenticated": true, 
+	// 	    "user": 
+	// 	    "initialZoom": ""
+	// 	};
+	// 	res.send(result);
+	// });
 
+models.account.create({
+    "initialPeriod": "1m", 
+    "authenticated": true,
+    "initialZoom": ""
+}).complete(function (err, account) {
+	models.user.create({
+        "username": "fritz.vandeventer", 
+        "first_name": "Fritz", 
+        "last_name": "van Deventer"
+    }).complete(function (err, user) {
+    	account.setUser(user);
+    })
+})

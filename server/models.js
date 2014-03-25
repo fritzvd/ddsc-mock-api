@@ -5,6 +5,23 @@ var sequelize = new Sequelize('ddsc-mock', 'fritz', 'fritz', {
 	port: 5432
 });
 
+var account = sequelize.define('Account', {
+	initialPeriod: Sequelize.STRING,
+	authenticated: Sequelize.BOOLEAN,
+	initialZoom: Sequelize.STRING,
+	panner: Sequelize.BOOLEAN
+});
+
+var user = sequelize.define('User', {
+	username: Sequelize.STRING,
+	first_name: Sequelize.STRING,
+	last_name: Sequelize.STRING
+});
+
+account.hasOne(user);
+user.belongsTo(account);
+
+// timeseries
 var location = sequelize.define('Location', {
 	uuid: Sequelize.STRING,
 	name: Sequelize.STRING,
@@ -31,6 +48,15 @@ var events = sequelize.define('Event',{
 	value: Sequelize.FLOAT(11)
 });
 
+location.hasMany(timeseries);
+location.hasMany(location, {as: 'Sublocations'});
+location.hasMany(location, {as: 'Superlocations'});
+timeseries.belongsTo(location);
+timeseries.hasMany(events);
+events.belongsTo(timeseries);
+
+
+// workspaces
 var workspaces = sequelize.define('Workspace', {
 	visibility: Sequelize.BOOLEAN,
     lon_lat_zoom: Sequelize.STRING, 
@@ -59,13 +85,6 @@ var wms_source = sequelize.define('Layer', {
 	options: Sequelize.STRING
 });
 
-location.hasMany(timeseries);
-location.hasMany(location, {as: 'Sublocations'});
-location.hasMany(location, {as: 'Superlocations'});
-timeseries.belongsTo(location);
-timeseries.hasMany(events);
-events.belongsTo(timeseries);
-
 workspaces.hasMany(workspaceitem);
 workspaceitem.belongsTo(workspaces);
 workspaceitem.hasOne(wms_source);
@@ -78,5 +97,7 @@ module.exports = {
 	workspaces: workspaces,
 	workspaceitems: workspaceitem,
 	layers: wms_source,
-	db: sequelize
+	account: account,
+	user: user,
+	db: sequelize,
 };

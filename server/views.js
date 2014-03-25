@@ -6,18 +6,19 @@ var primitives = {
 			options = {};
 		if (req.params.table == 'locations') {
 			options.include = [{model: models.timeseries}];
-		} else if (req.params.table == 'timeseries') {
-			// options.include = [models.locations, models.events];
-		} else if (req.params.table == 'events') {
-			// options.where = {timeseries.uuid: req.params.id};
+		} else if ((req.params.table == 'timeseries') ||
+            (req.params.table == 'events')) {
+	       // do nothing special
 		} else if (req.params.table == 'workspaces') {
 			options.include = [{
 				model: models.workspaceitems, 
 				include: [models.layers]
 			}];
 		} else if (req.params.table == 'workspaceitems') {
-			options.include = [models.layers];
-		} else if (req.params.table == 'layers') {
+            options.include = [models.layers];
+        } else if (req.params.table == 'account') {
+            options.include = [models.user];
+        } else if (req.params.table == 'layers') {
 			options.include = [];
 		} else {
 			res.send('not implemented');
@@ -31,12 +32,14 @@ var primitives = {
 					list.forEach(function (item) {
 						item.dataValues.events = 'http://localhost:3000/api/v1/events/' + item.id;
 						result.push(item);
-						console.info(item)
 					});
 				}
 				var response = {
 					results: result
 				}
+                if (req.params.table == 'account') {
+                    response = list[0];
+                }
 				res.send(response);
 			});
 	},
@@ -60,6 +63,21 @@ var primitives = {
 		}
 	}
 }
+
+var accountSave = function (req, res) {
+    models['account'].findOrCreate({id: 1}, req.body)
+        .success(function (account, created) {
+            if (!created) {
+                var keys = Object.keys(req.body);
+                for (var i in keys) {
+                    account[keys[i]] = req.body[keys[i]];
+                }
+                account.authenticated = true;
+                account.save();    
+            }
+            res.send(account);
+        })
+};
 
 var annotations = function (req, res) {
 	res.send({
@@ -1289,5 +1307,6 @@ var collages = function (req, res) {
 module.exports = {
 	primitives: primitives,
 	annotations: annotations,
-	collages: collages
+	collages: collages,
+    accountSave: accountSave
 };
