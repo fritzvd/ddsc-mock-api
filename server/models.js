@@ -27,14 +27,14 @@ var location = sequelize.define('Location', {
 	name: Sequelize.STRING,
 	shown_on_map: Sequelize.BOOLEAN,
 	owner: Sequelize.STRING,
-	point_geometry: Sequelize.STRING,
+	point_geometry: Sequelize.ARRAY(Sequelize.FLOAT),
 }, {
 	paranoid: true
 });
 
 var timeseries = sequelize.define('Timeserie',{
 	latest_timestamp: Sequelize.DATE,
-	value: Sequelize.FLOAT(11),
+	latest_value: Sequelize.FLOAT(11),
 	uuid: Sequelize.STRING,
 	value_type: Sequelize.STRING,
 	parameter: Sequelize.STRING,

@@ -7,12 +7,13 @@ models.locations.create({
 	name: 'WestDijk',
 	shown_on_map: true,
 	owner: 'fritz',
-	point_geometry: "[54.5, 4.3]"
+	point_geometry: [5.4, 51.3]
 }).complete(function (err, location) {
 	var timeseries1 = models.timeseries.create({
 	latest_timestamp: Date.now(),
 	uuid: 'henkie',
 	value_type: 'float',
+	latest_value: 0.3,
 	paramater: 'cholrine',
 	unit: 'm'
 	}).complete(function (err, timeseries) {
